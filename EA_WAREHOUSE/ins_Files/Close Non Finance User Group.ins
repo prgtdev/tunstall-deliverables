@@ -1,0 +1,34 @@
+-------------------------------------------------------------------------------------------- 
+-- Export file for Task C_EA_CUSTOMIZATION_UTIL_API.CLOSE_NON_FINANCE_USER_GROUP.
+-- 
+-- This ins file was created in the CRIM C334 Implementation.
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210409  IFSAPP  Export file for task C_EA_CUSTOMIZATION_UTIL_API.CLOSE_NON_FINANCE_USER_GROUP.       
+-------------------------------------------------------------------------------------------- 
+
+PROMPT Register Batch Schedule Method "C_EA_CUSTOMIZATION_UTIL_API.CLOSE_NON_FINANCE_USER_GROUP"
+DECLARE
+   schedule_method_id_ NUMBER          := NULL;
+   seq_no_             NUMBER          := NULL;
+   info_msg_           VARCHAR2(32000) := NULL;
+BEGIN
+-- Construct Main Message
+   info_msg_    := Message_SYS.Construct('');
+   Message_SYS.Add_Attribute(info_msg_, 'METHOD_NAME', 'C_EA_CUSTOMIZATION_UTIL_API.CLOSE_NON_FINANCE_USER_GROUP');
+   Message_SYS.Add_Attribute(info_msg_, 'DESCRIPTION', 'Close Non Finance User Group');
+   Message_SYS.Add_Attribute(info_msg_, 'MODULE', 'CONFIG');
+   Message_SYS.Add_Attribute(info_msg_, 'SINGLE_EXECUTION_DB', 'FALSE');
+   Message_SYS.Add_Attribute(info_msg_, 'ARGUMENT_TYPE_DB', 'NONE');
+   Message_SYS.Add_Attribute(info_msg_, 'VALIDATION_METHOD', '');
+   Message_SYS.Add_Attribute(info_msg_, 'CHECK_EXECUTING_DB', 'FALSE');
+   Message_SYS.Add_Attribute(info_msg_, 'CHECK_DAY_DB', 'FALSE');
+-- Register Batch Schedule Method
+   Batch_SYS.Register_Batch_Schedule_Method(schedule_method_id_, info_msg_);
+-- Adding parameters
+END;
+/
+COMMIT
+/
+
