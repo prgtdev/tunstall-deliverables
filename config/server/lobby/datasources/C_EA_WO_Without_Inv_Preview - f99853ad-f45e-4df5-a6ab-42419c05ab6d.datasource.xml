@@ -1,0 +1,33 @@
+﻿<SQLDataSource>
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-27-16.50.34</LastModified>
+  <Name>C_EA_WO_Without_Inv_Preview</Name>
+  <ID>f99853ad-f45e-4df5-a6ab-42419c05ab6d</ID>
+  <Select>
+    <DataColumn>
+      <Column>Count(*)</Column>
+      <Name>COUNT</Name>
+      <DataType>Number</DataType>
+    </DataColumn>
+  </Select>
+  <Where>STATE = 'Reported'
+ and EXISTS ( select 1 from
+            &amp;AO.JT_TASK_SALES_LINE_UIV
+            where STATE in ('Invoiceable')
+            and SERVICE_INVOICE_ID is null
+            and  wo_no = WO_NO
+             )
+ and EXISTS( select 1 from
+    IFSAPP.WORK_ORDER_JOURNAL
+    where    wo_no = WO_NO
+    and SOURCE_DB = 'WORK_ORDER'
+     and EVENT_TYPE_DB = 'STATUS_CHANGE' 
+     and NEW_VALUE = 'REPORTED'
+    and trunc(DT_CRE)&lt;=trunc(sysdate)-1 
+ ) 
+ and &amp;AO.Sc_Service_Contract_Api.Get_Contract_Type(CONTRACT_ID) LIKE NVL('$CONTRACT TYPE$','%') 
+
+  and CONTRACT like NVL('$CONTRACT$','%')
+  and &amp;AO.COMPANY_SITE_API.get_Company(CONTRACT) like NVL('$COMPANY$','%')</Where>
+  <View>&amp;AO.ACTIVE_SEPARATE_UIV</View>
+</SQLDataSource>

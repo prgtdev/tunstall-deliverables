@@ -1,0 +1,20 @@
+﻿<Counter>
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-08-13.22.18</LastModified>
+  <Title>Work Order Without Invoice Preview</Title>
+  <Background>#FFF7AC00</Background>
+  <Name>C_EA_WO_Without_Inv_Preview</Name>
+  <ID>dad4c893-2adb-4421-a5ef-1c154fef2bd1</ID>
+  <CustomUrl>ifsapf:frmWorkOrderReportInTab?COMPANY=$COMPANY$</CustomUrl>
+  <FormMappings />
+  <DataSourceId>f99853ad-f45e-4df5-a6ab-42419c05ab6d</DataSourceId>
+  <ColumnMapping>
+    <MappedColumns>
+      <MappedColumn>
+        <Column>*</Column>
+        <Aggregate>COUNT</Aggregate>
+        <ConditionalFormats />
+      </MappedColumn>
+    </MappedColumns>
+  </ColumnMapping>
+</Counter>

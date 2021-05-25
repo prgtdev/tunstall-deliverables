@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-28-11.59.06</LastModified>
+  <Layout>
+    <Groups>
+      <Group>
+        <Elements>
+          <Element id="b447c4f0-ea6f-4731-9155-d30f18ec0845" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="dad4c893-2adb-4421-a5ef-1c154fef2bd1" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="137a96a9-63af-4580-863a-76a8d1b3bad5" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="c7995a52-73e9-4069-ac38-275fbd0ef9a9" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="af5242eb-ac04-4d51-bd15-173e9b2572d4" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="08ca8891-fdce-47fe-929d-7a6277f3f470" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="ca5059da-e605-4e9c-90a8-275e5885e786" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="68e75b82-f789-41dd-8683-971757eba796" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+    </Groups>
+  </Layout>
+  <DataSources>
+    <DataSource id="2c04221f-b13e-4460-91ec-1bb9002ef4ec" />
+    <DataSource id="f99853ad-f45e-4df5-a6ab-42419c05ab6d" />
+    <DataSource id="af0ad602-24ba-4f16-ac86-37bc0ce73e46" />
+    <DataSource id="7470886b-0464-41e3-b6d8-8444f3f0f65a" />
+    <DataSource id="8359451a-bbb9-4eb5-905e-e7ccd350b18e" />
+    <DataSource id="fd9cb1d7-a09c-449b-bdac-b178ba6563bc" />
+    <DataSource id="bbc3ad91-8dbb-4bfe-9fa9-55a49c0a9e88" />
+    <DataSource id="05b57e9d-d02c-4cf6-a8ec-0b308ef7574d" />
+  </DataSources>
+  <Parameters>
+    <Parameter>
+      <Name>COMPANY</Name>
+      <Description>Company</Description>
+      <DefaultValue>#DEFAULT_COMPANY#</DefaultValue>
+    </Parameter>
+    <Parameter>
+      <Name>CONTRACT</Name>
+      <Description>Site</Description>
+      <DefaultValue>%</DefaultValue>
+    </Parameter>
+    <Parameter>
+      <Name>CONTRACT TYPE</Name>
+      <Description>Contract Type</Description>
+    </Parameter>
+  </Parameters>
+  <Filters />
+  <PageTitle> Tunstall Invoicing   #TODAY#</PageTitle>
+  <PageId>090a0a85-7884-497a-9102-ac5a308cb4c3</PageId>
+</Page>
