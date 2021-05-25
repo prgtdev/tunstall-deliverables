@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Author>IFS RnD</Author>
+  <LastModified>2021-05-25-13.34.54</LastModified>
+  <ClientTypesPage>Web</ClientTypesPage>
+  <Layout>
+    <Groups>
+      <Group>
+        <Elements>
+          <Element id="5e55bd32-dd35-4339-af9f-70b7d84ba1c2" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="53769211-d0a2-4ec3-b400-52d3e6479f3c" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="525d6145-1ba0-43e2-b6ff-0d06ec1b55cb" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="bfb35c5e-19f7-41e4-a7f9-641288100d37" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="ac475a30-ad67-4d40-a14c-3d5cffa97acd" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="5e7b67a1-d0b7-496f-a58b-5132b273f6af" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="d2bccca7-a331-47dc-9b50-9ed3be36673b" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="9ac5b0c7-2bf0-4844-94e1-7d64156dba08" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="58b384de-abbc-40dd-820f-46c93117cbda" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="0208a89d-4ff5-40fb-abfb-e88eab81053b" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="85089f48-268f-432e-986b-86399fbbf814" column="0" row="0" columnspan="2" rowspan="2" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="da708c27-7e07-4435-b6c6-78997688eca9" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="2eb6a0d3-2f2c-47c3-8547-eaf292c4e7c9" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="be43a10d-e9c5-4d1e-b5ac-ceda8cc16562" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="53ec1089-5a9f-452d-9f38-f460caff0d93" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="f1e06636-35cf-4f2e-9c39-1006fa972238" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="c76bbf90-7261-4315-90b9-4f07bf904087" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="a04e4159-6e81-46be-99ff-ccb388054b5d" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="d2368761-5a3e-4264-8efa-02684a84e0f0" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="df8d1182-6222-4ba5-87a1-ffbb88230fbe" column="1" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="829ae64e-0d38-4b38-b2e9-c0d60412740d" column="0" row="0" columnspan="2" rowspan="2" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="24c76353-6863-4c83-be48-3ba2a8a78638" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="f065fc5a-b407-431b-acc5-f911a7e28207" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="e276051a-a928-4098-a924-a6747e7a0748" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="f0e25081-faa8-4096-a8db-cbba9c21e6d9" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="6763c5b5-118b-4664-93b9-368a74122626" column="0" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="8a7b67c7-80d1-4201-82f9-c84f60835eb0" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+    </Groups>
+  </Layout>
+  <DataSources>
+    <DataSource id="b2e54ed5-1c48-439e-ac1a-ad03d627d2f7" />
+    <DataSource id="3a5db68c-4061-4f4a-b918-5eaa34eabb9e" />
+    <DataSource id="a5f22a7a-0386-4873-a078-780fb5395e7c" />
+    <DataSource id="Copy of FI Invoices due today - Customer" />
+    <DataSource id="e2581622-4345-4b5a-8985-586c5cd822a4" />
+    <DataSource id="FI Overdue Customer Balance" />
+    <DataSource id="d45c7368-6542-43f8-b504-9155b4c4fd1b" />
+    <DataSource id="9705c5c9-878e-48c4-8622-48abcc45d9be" />
+    <DataSource id="528151b8-5000-4748-8e36-70e6156fd3a0" />
+    <DataSource id="2c31ef6f-8e56-4607-b82d-cb5ec6568b66" />
+    <DataSource id="e12787df-65bc-414c-b8a7-a4ae7d3b2c4a" />
+    <DataSource id="FI Open Invoices - Customer" />
+    <DataSource id="0e7df161-7a49-452d-a25b-207a61f57042" />
+    <DataSource id="a81f4e46-788c-4ed8-98c7-309d8bcd159b" />
+    <DataSource id="b5aed5f3-4382-4653-be79-3f13ac1dae32" />
+    <DataSource id="16606e5c-8d93-4561-bb70-6e9e078908fa" />
+    <DataSource id="402e4772-dcc6-4c9e-9cd3-c61d25458ace" />
+    <DataSource id="6b0103c2-2ec4-46f5-a4c5-0df54370b032" />
+    <DataSource id="04145074-91c2-46bb-8f21-a375a7efed9e" />
+    <DataSource id="a05e7516-6cdd-4d88-9baa-620b10f7aa58" />
+    <DataSource id="4d6a230a-0d0a-4e85-9f26-22c9bd62b39d" />
+    <DataSource id="7508ae51-522b-42a4-9385-5b7b083d6e4c" />
+    <DataSource id="07d7e323-b5cb-4553-be61-e097ef740bd6" />
+  </DataSources>
+  <Parameters>
+    <Parameter>
+      <Name>COMPANY</Name>
+      <Description>Company</Description>
+      <DefaultValue>#DEFAULT_COMPANY#</DefaultValue>
+    </Parameter>
+  </Parameters>
+  <Filters />
+  <PageTitle>ACCOUNTS RECEIVABLE    #TODAY#</PageTitle>
+  <PageId>8dbb4c8c-6b21-4db7-ad1e-32b33c1804fd</PageId>
+  <Translations />
+</Page>
