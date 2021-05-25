@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Author>IFS RnD</Author>
+  <LastModified>2021-04-27-19.20.22</LastModified>
+  <Layout>
+    <Groups>
+      <Group>
+        <Elements>
+          <Element id="d76ebb84-77e3-4ebf-b00c-6e582683cef0" column="2" row="0" columnspan="2" rowspan="1" />
+          <Element id="03c2597c-abd6-479c-bf37-88f37eebf25b" column="0" row="0" columnspan="2" rowspan="1" />
+          <Element id="3e24f15a-509b-47a5-a445-131aaf113fa4" column="0" row="1" columnspan="1" rowspan="1" />
+          <Element id="9451e758-9957-4e96-a546-33edccc99175" column="1" row="1" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements />
+        <IsSeparator>true</IsSeparator>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="e7e81ade-c017-4a08-832e-20f285862ff4" column="0" row="0" columnspan="2" rowspan="1" />
+          <Element id="16b8c4db-f743-4c09-bfab-82bb1a0936a2" column="2" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="cf179b2b-9863-40f7-8935-710ec7a6dff3" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="55bdd90a-f139-4378-b8ec-89089658f60d" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="d3d41b26-5f90-4e5f-b3b3-977ee3827902" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+    </Groups>
+  </Layout>
+  <DataSources>
+    <DataSource id="07d7e323-b5cb-4553-be61-e097ef740bd6" />
+    <DataSource id="b09b146b-2742-47c1-91bc-037c42407f33" />
+    <DataSource id="a02e6c6f-5517-4a53-b06e-23c82894698c" />
+  </DataSources>
+  <Parameters>
+    <Parameter>
+      <Name>COMPANY</Name>
+      <Description>Company</Description>
+      <DefaultValue>#DEFAULT COMPANY#</DefaultValue>
+    </Parameter>
+    <Parameter>
+      <Name>CREDIT MANAGER</Name>
+      <Description>Credit Manager</Description>
+    </Parameter>
+    <Parameter>
+      <Name>CONTRACT TYPE</Name>
+      <Description>Contract Type</Description>
+    </Parameter>
+  </Parameters>
+  <Filters />
+  <PageTitle>CREDIT MANAGER</PageTitle>
+  <PageId>b627015b-2a27-455d-89e4-282602317fe0</PageId>
+</Page>

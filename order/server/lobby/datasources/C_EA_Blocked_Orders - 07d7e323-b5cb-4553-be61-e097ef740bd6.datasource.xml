@@ -1,0 +1,18 @@
+﻿<SQLDataSource>
+  <Author>EntChathI</Author>
+  <LastModified>2021-05-25-13.05.56</LastModified>
+  <Name>C_EA_Blocked_Orders</Name>
+  <ID>07d7e323-b5cb-4553-be61-e097ef740bd6</ID>
+  <Select>
+    <DataColumn>
+      <Column>Count(*)</Column>
+      <Name>COUNT</Name>
+      <DataType>Number</DataType>
+    </DataColumn>
+  </Select>
+  <Where>OBJSTATE = 'Blocked'
+and company like NVL('$COMPANY$','%')
+</Where>
+  <View>&amp;AO.CUSTOMER_ORDER</View>
+  <GroupBy />
+</SQLDataSource>

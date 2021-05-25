@@ -1,0 +1,19 @@
+﻿<Counter>
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-07-15.58.19</LastModified>
+  <Title>Blocked Orders</Title>
+  <Name>C_EA_Blocked_Orders</Name>
+  <ID>cf179b2b-9863-40f7-8935-710ec7a6dff3</ID>
+  <CustomUrl>ifsapf:tbwReleaseCustOrder?COMPANY=$COMPANY$</CustomUrl>
+  <FormMappings />
+  <DataSourceId>07d7e323-b5cb-4553-be61-e097ef740bd6</DataSourceId>
+  <ColumnMapping>
+    <MappedColumns>
+      <MappedColumn>
+        <Column>*</Column>
+        <Aggregate>COUNT</Aggregate>
+        <ConditionalFormats />
+      </MappedColumn>
+    </MappedColumns>
+  </ColumnMapping>
+</Counter>
