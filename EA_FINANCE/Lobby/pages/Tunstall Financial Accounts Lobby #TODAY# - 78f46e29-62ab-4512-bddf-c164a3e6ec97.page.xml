@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Author>IFS RnD</Author>
+  <Keywords>aurena</Keywords>
+  <LastModified>2021-04-15-11.31.27</LastModified>
+  <Locked>true</Locked>
+  <ClientTypesPage>Web</ClientTypesPage>
+  <Layout>
+    <Groups>
+      <Group>
+        <Elements>
+          <Element id="1e38f172-8ff4-4045-bffd-99a76e8a013f" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="ded4c9d9-b394-4c94-85f9-b91e2819e098" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="1fe5e215-b1e7-45bb-ab02-bc4f6fbddeba" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="00c7c9e6-a838-4540-83f4-ff62a092d103" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="00c44c6e-5214-4994-b319-aa1c6038c25f" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="4af910f6-d570-444c-a8e9-b40c0d00fd7a" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="5c09e4a4-d4a8-4802-99eb-2db3e7ae71b0" column="1" row="0" columnspan="1" rowspan="1" />
+          <Element id="84f7c973-93df-4ae4-b9cb-74479a4f444f" column="2" row="0" columnspan="1" rowspan="1" />
+          <Element id="bd53fe12-aaa1-482a-b198-7f200a52dfe5" column="3" row="0" columnspan="1" rowspan="1" />
+          <Element id="0be9df3d-2bc6-4a24-987f-adc7be4f98c2" column="0" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="84794920-2589-4e48-9e4f-2dbca9332c75" column="0" row="0" columnspan="1" rowspan="1" />
+          <Element id="43e27566-837c-4d2c-8759-d69707f85891" column="1" row="0" columnspan="1" rowspan="1" />
+          <Element id="6bb6a8b1-7aa7-4364-b905-eb25dced09f9" column="2" row="0" columnspan="1" rowspan="1" />
+          <Element id="64932ea6-298c-485f-bd05-edba8061f713" column="3" row="0" columnspan="1" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="0bbf4e98-fe4b-4319-b02f-1963a5434d88" column="0" row="0" columnspan="4" rowspan="2" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="9d312850-bdee-4634-9213-7b30fbb77c03" column="0" row="0" columnspan="2" rowspan="1" />
+          <Element id="b517d228-bd42-408a-85bd-537e10829063" column="2" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="a42bca2e-0361-484f-a514-2170d9a50334" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="bc86913a-8b14-4ed1-b650-3b114db8c952" column="0" row="0" columnspan="4" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="e3ff5854-f1ef-4c18-9719-255a29c48600" column="2" row="0" columnspan="2" rowspan="1" />
+          <Element id="e4532f24-3ae8-45ad-a284-01902618970a" column="2" row="1" columnspan="2" rowspan="1" />
+          <Element id="74db8462-8ee6-44a4-9b6b-7cf93302c56f" column="0" row="0" columnspan="2" rowspan="2" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="77556d6a-7408-4672-8e72-ba35e45113c1" column="0" row="0" columnspan="2" rowspan="1" />
+          <Element id="8b8c9046-9d64-4357-9386-fbc22a606eda" column="2" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+      <Group>
+        <Elements>
+          <Element id="e9d1f28f-1220-407a-a6b0-41c79f10007f" column="0" row="0" columnspan="2" rowspan="1" />
+          <Element id="a1eca446-e425-4844-b62e-b288ef3b3d98" column="2" row="0" columnspan="2" rowspan="1" />
+        </Elements>
+      </Group>
+    </Groups>
+  </Layout>
+  <DataSources>
+    <DataSource id="fc91fdaf-f65c-4cee-910f-080b0b2a1b74" />
+    <DataSource id="8ab8891d-0cea-47c7-b99f-4401ceb823a4" />
+    <DataSource id="3c5ddc06-1533-43fa-ae0f-9fe86a791452" />
+    <DataSource id="bb6afe1a-711f-4ba4-a395-a8ae63d1b416" />
+    <DataSource id="45227b55-f7c9-4d55-b9d6-365bcb187d04" />
+    <DataSource id="368586d1-eaad-4ae4-8eb4-fd41f247c2c4" />
+    <DataSource id="2146fc74-300c-4103-a8bf-68a4640466c8" />
+    <DataSource id="b388cbfe-0a98-4194-9658-5b9c7024bb0a" />
+    <DataSource id="ff43b258-fa0d-4df2-bee1-3d8436bc5f4a" />
+    <DataSource id="e12787df-65bc-414c-b8a7-a4ae7d3b2c4a" />
+    <DataSource id="9abe7a39-91b3-4d8d-8c18-5d3ffa7bce6e" />
+    <DataSource id="9c08e98e-b657-4524-a80e-c0b1465e7429" />
+    <DataSource id="2d188028-c998-4b5d-a9e1-ced82552f7fd" />
+    <DataSource id="582b2027-03c6-4f68-8790-177726604ae7" />
+    <DataSource id="7b07d7a5-6bd4-42ca-89df-5f62fe32207c" />
+    <DataSource id="e8590239-bde5-4990-9eaf-704d13d5c86a" />
+    <DataSource id="e7b7fbbd-5378-4626-8d09-0490b7959c7f" />
+    <DataSource id="01ad632f-cb7a-47a8-996a-7d076a27df45" />
+    <DataSource id="65b862b4-bc8e-4269-be44-2b04fbcbd16f" />
+    <DataSource id="10d54941-6b27-4c4d-ab62-7ddb84ff36f4" />
+    <DataSource id="e8e5a0e5-c04d-4622-8606-7d1774fec8c7" />
+  </DataSources>
+  <Parameters>
+    <Parameter>
+      <Name>COMPANY</Name>
+      <Description>Company</Description>
+      <DefaultValue>#DEFAULT_COMPANY#</DefaultValue>
+    </Parameter>
+    <Parameter>
+      <Name>CASH_FLOW_ANALYSIS_ID</Name>
+      <Description>Cash Flow Analysis Id</Description>
+    </Parameter>
+    <Parameter>
+      <Name>ACCOUNTING_YEAR</Name>
+      <Description>Accounting Year</Description>
+    </Parameter>
+    <Parameter>
+      <Name>ACCOUNTING_PERIOD</Name>
+      <Description>Accounting Period</Description>
+    </Parameter>
+    <Parameter>
+      <Name>PROGRAM_ID</Name>
+      <Description>Program Id</Description>
+    </Parameter>
+  </Parameters>
+  <Filters />
+  <PageTitle>Tunstall Financial Accounts Lobby #TODAY#</PageTitle>
+  <PageId>78f46e29-62ab-4512-bddf-c164a3e6ec97</PageId>
+  <Image>pack://application:,,,/Ifs.Fnd.CompositePageRenderer;component/Images/Page/page_backdrop_02.jpg</Image>
+  <Translations />
+</Page>
