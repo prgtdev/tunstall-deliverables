@@ -1,0 +1,20 @@
+﻿<Counter>
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-08-11.45.49</LastModified>
+  <Title>New Invoice Previews</Title>
+  <Background>#FF006996</Background>
+  <Name>C_EA_New_Invoice_Previews</Name>
+  <ID>b447c4f0-ea6f-4731-9155-d30f18ec0845</ID>
+  <CustomUrl>ifsapf:frmServiceInvoicePreview?COMPANY=$COMPANY$</CustomUrl>
+  <FormMappings />
+  <DataSourceId>2c04221f-b13e-4460-91ec-1bb9002ef4ec</DataSourceId>
+  <ColumnMapping>
+    <MappedColumns>
+      <MappedColumn>
+        <Column>*</Column>
+        <Aggregate>COUNT</Aggregate>
+        <ConditionalFormats />
+      </MappedColumn>
+    </MappedColumns>
+  </ColumnMapping>
+</Counter>

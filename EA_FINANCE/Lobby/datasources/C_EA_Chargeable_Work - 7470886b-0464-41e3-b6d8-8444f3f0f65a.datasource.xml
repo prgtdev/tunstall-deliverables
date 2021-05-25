@@ -1,0 +1,28 @@
+﻿<SQLDataSource>
+  <Author>EntChathI</Author>
+  <LastModified>2021-04-28-11.13.30</LastModified>
+  <Name>C_EA_Chargeable_Work</Name>
+  <ID>7470886b-0464-41e3-b6d8-8444f3f0f65a</ID>
+  <Select>
+    <DataColumn>
+      <Column>count(*)</Column>
+      <Name>COUNT</Name>
+      <DataType>Number</DataType>
+    </DataColumn>
+  </Select>
+  <Where>((CUST_ORDER_NO is null
+and STATE = 'WorkDone'
+and &amp;AO.C_EA_Customization_Util_API.Check_Cause_Discount(wo_no, '$COMPANY$', '$CONTRACT$', 'Chargeable')='TRUE'
+)
+OR
+(STATE = 'Reported'
+  and &amp;AO.Customer_Order_API.Get_State(CUST_ORDER_NO) not in ('Invoiced/Closed')
+  and &amp;AO.C_EA_Customization_Util_API.Check_Cause_Discount(wo_no, '$COMPANY$', '$CONTRACT$','Chargeable')='TRUE'
+))
+and &amp;AO.Sc_Service_Contract_Api.Get_Contract_Type(CONTRACT_ID) LIKE NVL('$CONTRACT TYPE$','%')
+
+
+  and CONTRACT like NVL('$CONTRACT$','%')
+  and &amp;AO.COMPANY_SITE_API.get_Company(CONTRACT) like NVL('$COMPANY$','%')</Where>
+  <View>&amp;AO.ACTIVE_SEPARATE_UIV</View>
+</SQLDataSource>
