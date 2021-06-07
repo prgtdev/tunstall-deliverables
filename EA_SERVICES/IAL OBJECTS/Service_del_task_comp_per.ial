@@ -1,0 +1,70 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object SERVICE_DEL_TASK_COMP_PER
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210607  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SERVICE_DEL_TASK_COMP_PER
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT wo_no,
+       task_seq,
+       cf$_tunstall_sla,
+       actual_finish,
+       state,
+       (CASE
+          WHEN ((state IN ('Work Done', 'Reported', 'Finished') AND
+               cf$_tunstall_sla IS NULL) OR
+               cf$_tunstall_sla >= actual_finish) THEN
+           '1'
+          WHEN cf$_tunstall_sla < actual_finish THEN
+           '0'
+       END) sla_status
+  FROM &AO..jt_task_uiv_cfv
+ WHERE &AO..Sc_Service_Contract_API.Get_Contract_Type(NVL(&AO..Active_Separate_API.Get_Contract_Id(wo_no),
+                                                          contract_id)) = 'MS'
+   AND actual_finish IS NOT NULL
+
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'C0459';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

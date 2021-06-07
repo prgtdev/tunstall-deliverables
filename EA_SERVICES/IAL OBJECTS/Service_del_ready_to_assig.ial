@@ -1,0 +1,68 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object SERVICE_DEL_READY_TO_ASSIG
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210607  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SERVICE_DEL_READY_TO_ASSIG
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT wo_no, 
+             task_seq
+  FROM &AO..jt_task_uiv wt
+ WHERE task_seq NOT IN (SELECT task_seq
+                          FROM &AO..jt_execution_instance_uiv wa
+                         WHERE wa.task_seq = wt.task_seq)
+      
+   AND task_seq NOT IN (SELECT task_seq
+                          FROM &AO..maint_material_req_line_uiv
+                         WHERE task_seq = wt.task_seq
+                        MINUS
+                        SELECT task_seq
+                          FROM &AO..maint_material_req_line_uiv
+                         WHERE task_seq = wt.task_seq
+                           AND plan_qty = qty_assigned)
+
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'C0459';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/
