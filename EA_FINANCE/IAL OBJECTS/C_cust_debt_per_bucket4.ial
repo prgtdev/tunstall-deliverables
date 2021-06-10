@@ -1,0 +1,80 @@
+-----------------------------------------------------------------------------
+--
+--  Component: CONFIG
+--
+--  Purpose: Creates the IAL Object C_CUST_DEBT_PER_BUCKET4
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210526  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = C_CUST_DEBT_PER_BUCKET4
+DEFINE MODULE        = CONFIG
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+select * from (
+select sum(open_amount) open_amt, identity,company
+ from &AO..BUCKET_INVOICE_CU_QUERY 
+where bucket =4
+  group by identity, company
+)
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+----------------------- TABLE FOR DATA REPLICATION --------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+   dummy_ NUMBER := 0;
+   CURSOR check_table IS
+      SELECT  1
+        FROM  user_tables
+        WHERE table_name = UPPER('&OBJECT._TAB');
+BEGIN
+   OPEN  check_table;
+   FETCH check_table INTO dummy_;
+   IF NOT (check_table%FOUND) THEN
+       EXECUTE IMMEDIATE ('CREATE TABLE &IAL_OWNER..&OBJECT._TAB ' || 
+                          '   TABLESPACE &ial_data ' || 
+                          '   AS ( SELECT * FROM &IAL_OWNER..&OBJECT._IAL WHERE 1=2 )' );
+   END IF;
+   CLOSE check_table;
+END;
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'C0367 ';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/
