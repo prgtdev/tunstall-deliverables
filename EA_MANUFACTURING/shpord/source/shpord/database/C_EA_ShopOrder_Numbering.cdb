@@ -1,0 +1,28 @@
+-----------------------------------------------------------------------------
+--  Module : SHPORD
+--
+--  File   : C_EA_ShopOrder_Numbering.cdb
+--
+--  IFS Developer Studio Template Version 2.6
+--
+--  Date     Sign        History
+--  ------   ----------  --------------------------------------------------
+--  210524   EA-Maheshi  Created
+--  ------   ----------  --------------------------------------------------
+-----------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON
+EXEC Installation_SYS.Log_Detail_Time_Stamp('SHPORD', 'C_EA_ShopOrder_Numbering.cdb', 'Timestamp_1');
+PROMPT Remove sequence so_order_no and create again with minimum value 100000.
+
+BEGIN  
+   -- Note : Sequence exist check is done from Database_SYS    
+   Database_SYS.Remove_Sequence('so_order_no', TRUE); 
+   Database_SYS.Create_Sequence('so_order_no', 'MAXVALUE 999999999999 INCREMENT BY 1 START WITH 100000 NOCACHE', TRUE);
+END;   
+/
+
+EXEC Installation_SYS.Log_Detail_Time_Stamp('SHPORD', 'C_EA_ShopOrder_Numbering.cdb', 'Done');
+SET SERVEROUTPUT OFF
+
+
