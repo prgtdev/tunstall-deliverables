@@ -1,0 +1,21 @@
+﻿<SQLDataSource>
+  <Author>EntChathI</Author>
+  <LastModified>2021-06-22-10.40.43</LastModified>
+  <Name>C_EA_CUST_ORDER_WORK_ORDER</Name>
+  <ID>cba51138-f60f-48fe-aee0-ae5d750f990a</ID>
+  <Select>
+    <DataColumn>
+      <Column>Count(distinct(Order_no))</Column>
+      <Name>COUNT</Name>
+      <DataType>Number</DataType>
+    </DataColumn>
+  </Select>
+  <Where>order_no IN (SELECT a.order_no FROM &amp;AO.CUSTOMER_ORDER a, &amp;AO.CUSTOMER_ORDER_LINE b
+WHERE a.ORDER_NO = b.ORDER_NO
+AND a.state ='Planned'
+AND (b.line_no =1 AND b.demand_code ='Work Order')
+)
+AND company LIKE NVL('$COMPANY$','%')
+AND contract LIKE NVL('$CONTRACT$','%')</Where>
+  <View>&amp;IAL.C_CUST_ORDER_WORK_ORDER</View>
+</SQLDataSource>

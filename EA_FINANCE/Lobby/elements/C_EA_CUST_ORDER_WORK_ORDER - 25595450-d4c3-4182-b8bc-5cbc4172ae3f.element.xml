@@ -1,0 +1,19 @@
+﻿<Counter>
+  <Author>EntChathI</Author>
+  <LastModified>2021-06-22-10.39.58</LastModified>
+  <Title>Planned Customer Order from Work Order</Title>
+  <Background>#FF369B30</Background>
+  <Name>C_EA_CUST_ORDER_WORK_ORDER</Name>
+  <ID>25595450-d4c3-4182-b8bc-5cbc4172ae3f</ID>
+  <CustomUrl>ifsapf:frmCustomerOrder_Ext?COMPANY=$COMPANY$</CustomUrl>
+  <FormMappings />
+  <DataSourceId>cba51138-f60f-48fe-aee0-ae5d750f990a</DataSourceId>
+  <ColumnMapping>
+    <MappedColumns>
+      <MappedColumn>
+        <Column>Count(distinct(Order_no))</Column>
+        <ConditionalFormats />
+      </MappedColumn>
+    </MappedColumns>
+  </ColumnMapping>
+</Counter>

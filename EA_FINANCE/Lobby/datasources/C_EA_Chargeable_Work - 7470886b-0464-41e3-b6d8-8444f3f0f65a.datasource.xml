@@ -1,6 +1,6 @@
 ﻿<SQLDataSource>
   <Author>EntChathI</Author>
-  <LastModified>2021-04-28-11.13.30</LastModified>
+  <LastModified>2021-06-22-10.35.41</LastModified>
   <Name>C_EA_Chargeable_Work</Name>
   <ID>7470886b-0464-41e3-b6d8-8444f3f0f65a</ID>
   <Select>
@@ -10,19 +10,11 @@
       <DataType>Number</DataType>
     </DataColumn>
   </Select>
-  <Where>((CUST_ORDER_NO is null
-and STATE = 'WorkDone'
-and &amp;AO.C_EA_Customization_Util_API.Check_Cause_Discount(wo_no, '$COMPANY$', '$CONTRACT$', 'Chargeable')='TRUE'
-)
-OR
-(STATE = 'Reported'
-  and &amp;AO.Customer_Order_API.Get_State(CUST_ORDER_NO) not in ('Invoiced/Closed')
-  and &amp;AO.C_EA_Customization_Util_API.Check_Cause_Discount(wo_no, '$COMPANY$', '$CONTRACT$','Chargeable')='TRUE'
-))
-and &amp;AO.Sc_Service_Contract_Api.Get_Contract_Type(CONTRACT_ID) LIKE NVL('$CONTRACT TYPE$','%')
-
-
-  and CONTRACT like NVL('$CONTRACT$','%')
-  and &amp;AO.COMPANY_SITE_API.get_Company(CONTRACT) like NVL('$COMPANY$','%')</Where>
+  <Where>state = 'Reported'
+AND &amp;AO.C_EA_Customization_Util_API.Check_Cause_Discount(wo_no, 'Chargeable') ='TRUE'
+AND CUST_ORDER_NO is null
+AND(&amp;AO.Sc_Service_Contract_Api.Get_Contract_Type(CONTRACT_ID) LIKE  NVL('$CONTRACT TYPE$', '%') OR '$CONTRACT TYPE$'= '%' OR '$CONTRACT TYPE$' IS NULL)
+AND CONTRACT like NVL('$CONTRACT$','%')
+AND &amp;AO.COMPANY_SITE_API.get_Company(CONTRACT) like NVL('$COMPANY$','%')</Where>
   <View>&amp;AO.ACTIVE_SEPARATE_UIV</View>
 </SQLDataSource>
