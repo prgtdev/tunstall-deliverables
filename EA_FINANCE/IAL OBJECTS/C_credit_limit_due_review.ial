@@ -8,7 +8,7 @@
 --
 --  Date    Sign    History
 --  ------  ------  -----------------------------------------------------------
---  210428  IFSAPP  Created.
+--  210716  IFSAPP  Created.
 -----------------------------------------------------------------------------
 
 DEFINE OBJECT        = C_CREDIT_LIMIT_DUE_REVIEW
@@ -34,7 +34,7 @@ END;
 CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
 select * from (
 select * from &AO..CUSTOMER_CREDIT_INFO_CUST 
-where NEXT_REVIEW_DATE <= ADD_MONTHS(trunc(SYSDATE), -11)
+where NEXT_REVIEW_DATE <= trunc(SYSDATE)
 )
 WITH   read only;
 
