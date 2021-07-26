@@ -1,0 +1,63 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object OVERDUE_WOS
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210617  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = OVERDUE_WOS
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT a.task_seq, a.wo_no
+          FROM &AO..jt_task_cfv a
+         WHERE a.state IN ('New',
+                           'Under Preparation',
+                           'Prepared',
+                           'Released',
+                           'Work Started')
+           AND TRUNC(a.cf$_tunstall_sla) < TRUNC(sysdate)
+           AND &AO..
+         Sc_Service_Contract_API.Get_Contract_Type(&AO..
+                                                         Jt_Task_API.Get_Contract_Id(a.task_seq)) = 'MS'
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA-CRIM 449 - SERVICE DELIVERY MANAGEMENT LOBBY';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

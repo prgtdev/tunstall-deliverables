@@ -1,0 +1,71 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object MATERIALS_READ_TO_TRANSFER
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210617  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = MATERIALS_READ_TO_TRANSFER
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT DISTINCT a.task_seq, a.wo_no
+          FROM &AO..maint_material_req_line_uiv a
+         WHERE a.wo_no IN
+               (SELECT t2.wo_no
+                  FROM &AO..jt_task_uiv_cfv t2
+                 WHERE t2.task_seq IN
+                       (SELECT t2.task_seq
+                          FROM &AO..jt_execution_instance_uiv t2
+                         WHERE t2.state = 'Assigned'
+                           AND t2.sent_date IS NULL)
+                   AND t2.task_seq IN
+                       (SELECT task_seq
+                          FROM &AO..transport_task_line         ttl,
+                               &AO..maint_material_req_line_uiv mt
+                         WHERE ttl.order_ref3 = mt.maint_material_order_no
+                           AND ttl.order_ref2 = mt.task_seq
+                           AND (&AO..Transport_Task_API.Has_Line_In_Status_Picked(ttl.transport_task_id) =
+                               'TRUE' OR &AO..Transport_Task_API.Has_Line_In_Status_Executed(ttl.transport_task_id) =
+                               'TRUE')))
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA-CRIM 449 - SERVICE DELIVERY MANAGEMENT LOBBY';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

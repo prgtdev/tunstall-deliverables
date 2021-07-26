@@ -1,0 +1,61 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object SLA_MISSED_BY_REASON
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210617  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SLA_MISSED_BY_REASON
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT a.TASK_SEQ,
+               a.wo_no,
+               NVL(a.cf$_missed_sla_reason, 'BLANK') AS MISSED_SLA_REASON
+          FROM &AO..jt_task_cfv a
+         WHERE TRUNC(a.cf$_tunstall_sla) < TRUNC(a.actual_finish)
+           AND TRUNC(a.cf$_tunstall_sla) is not null
+           AND TRUNC(a.actual_finish) is not null
+           AND &AO..SC_SERVICE_CONTRACT_API.Get_Contract_Type(&AO..Jt_Task_API.Get_Contract_id(a.TASK_SEQ)) = 'MS'
+         ORDER BY a.cf$_missed_sla_reason
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA - C0449 Equipment Installed ';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

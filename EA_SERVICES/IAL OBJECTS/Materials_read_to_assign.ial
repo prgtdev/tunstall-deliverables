@@ -1,0 +1,78 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object MATERIALS_READ_TO_ASSIGN
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210617  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = MATERIALS_READ_TO_ASSIGN
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT DISTINCT a.task_seq, a.wo_no
+          FROM &AO..maint_material_req_line_uiv a
+         WHERE a.wo_no IN
+               (SELECT DISTINCT t.wo_no
+                  FROM &AO..jt_task_uiv_cfv t
+                 WHERE EXISTS
+                 (SELECT 1
+                          FROM &AO..maint_material_req_line_uiv
+                         WHERE wo_no = t.wo_no
+                           AND task_seq = t.task_seq
+                           AND ((SELECT COUNT(*)
+                                   FROM &AO..maint_material_req_line_uiv a
+                                  WHERE a.task_seq = t.task_seq
+                                    AND a.wo_no = t.wo_no
+                                    AND a.task_seq IS NOT NULL) =
+                               (SELECT COUNT(*)
+                                   FROM &AO..maint_material_req_line_uiv a
+                                  WHERE a.task_seq = t.task_seq
+                                    AND a.qty_assigned = a.plan_qty
+                                    AND a.wo_no = t.wo_no
+                                    AND a.task_seq IS NOT NULL)))
+                   AND t.task_seq NOT IN
+                       (SELECT task_seq FROM &AO..jt_execution_instance_uiv)
+                   )
+           AND &AO..Active_separate_API.Get_State(a.wo_no) NOT IN
+               ('WorkDone', 'Finished', 'Reported', 'Cancelled')
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA-CRIM 449 - SERVICE DELIVERY MANAGEMENT LOBBY';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

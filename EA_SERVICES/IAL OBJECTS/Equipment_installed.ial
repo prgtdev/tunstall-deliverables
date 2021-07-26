@@ -1,0 +1,62 @@
+-----------------------------------------------------------------------------
+--
+--  Component: EQUIP
+--
+--  Purpose: Creates the IAL Object EQUIPMENT_INSTALLED
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210617  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = EQUIPMENT_INSTALLED
+DEFINE MODULE        = EQUIP
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT a.part_no,
+              &AO..Part_Catalog_API.Get_Description(a.part_no, 'en') AS DESCRIPTION,
+               NVL(a.cf$_equipment_quantity, 1) AS QUANTITY,
+               a.mch_code
+  FROM &AO..equipment_functional_cfv a
+WHERE a.part_no IS NOT NULL
+     AND a.objtype = 'EquipmentFunctional'
+     AND a.operational_status_db = 'IN_OPERATION'
+     AND &AO..Sc_Service_Contract_API.Get_Contract_Type(&AO..C_Ea_Customization_Util_API.Get_Contract_Id(a.mch_code,
+                                                                                                     a.contract)) = 'MS'
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA - C0449 Equipment Installed ';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

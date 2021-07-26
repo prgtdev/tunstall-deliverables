@@ -1,0 +1,62 @@
+-----------------------------------------------------------------------------
+--
+--  Component: PCMSCI
+--
+--  Purpose: Creates the IAL Object MONITORED_ACTIVE_USERS
+--
+--
+--
+--  Date    Sign        History
+--  ------  ----------  -----------------------------------------------------------
+--  210719  ERIKA.SUKE  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = MONITORED_ACTIVE_USERS
+DEFINE MODULE        = PCMSCI
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT mch_code,
+               contract,
+               &AO..C_Ea_Customization_Util_API.Get_Contract_Id(mch_code,
+                                                                             contract) As contract_id
+          FROM &AO..equipment_functional a, &AO..service_user_status_clv b
+         WHERE a.mch_code = b.cf$_mch_code
+           AND a.contract = b.cf$_contract
+           AND a.obj_level = '360_SERVICE_USER'
+           AND b.cf$_service_user_status = 'Active'
+           AND b.cf$_monitored = 'True'
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA - Service Delivery  Management Lobby';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

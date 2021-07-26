@@ -1,0 +1,66 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object COMPLETED_TASKS_WITHIN_SLA
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210618  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = COMPLETED_TASKS_WITHIN_SLA
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT *
+          FROM (SELECT CASE
+                         WHEN ((cf$_tunstall_sla >= actual_finish) or
+                              (state IN ('Work Done', 'Reported', 'Finished') AND
+                              cf$_tunstall_sla IS NULL)) THEN
+                          'Within SLA'
+                       end AS status,
+                       contract_id,
+                       task_seq,
+                       wo_no
+                  FROM &AO..jt_task_uiv_cfv
+                 WHERE &AO..Sc_Service_Contract_API.Get_Contract_Type(&AO..Jt_Task_API.Get_Contract_Id(task_seq)) = 'MS'
+                   AND actual_finish is not null)
+         where status = 'Within SLA'
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA - Service Delivery  Management Lobby';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

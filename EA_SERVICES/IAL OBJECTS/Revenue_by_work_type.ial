@@ -1,0 +1,70 @@
+-----------------------------------------------------------------------------
+--
+--  Component: JTTASK
+--
+--  Purpose: Creates the IAL Object REVENUE_BY_WORK_TYPE
+--
+--
+--
+--  Date    Sign        History
+--  ------  ----------  -----------------------------------------------------------
+--  210618  ERIKA.SUKE  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = REVENUE_BY_WORK_TYPE
+DEFINE MODULE        = JTTASK
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT a.sales_line_seq,
+               &AO..Service_Pricing_API.Get_Sales_Price_Amount_Rounded(a.sales_part_site,
+                                                                  a.sales_part_no,
+                                                                  a.qty_to_invoice,
+                                                                  a.sales_price,
+                                                                  a.discount,
+                                                                  a.currency_code,
+                                                                  a.revenue_percent) as SALES_PRICE_AMOUNT_CURR,
+               &AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq) as task_seq,
+               &AO..Jt_Task_API.Get_Work_Type_Id(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq)) as work_type_id,
+               &AO..Jt_Task_API.Get_Contract_Id(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq)) as contract_id,
+               &AO..Jt_Task_API.Get_Wo_No(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq)) as wo_no,
+               &AO..Crm_Cust_Info_API.Get_Main_Representative_Id(&AO..Jt_Task_API.Get_Customer_No(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq))) as main_rep
+          FROM &AO..jt_task_sales_line_tab a
+         WHERE &AO..Sc_Service_Contract_API.Get_Contract_Type(&AO..Jt_Task_API.Get_Contract_Id(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq))) = 'MS'
+           AND &AO..Jt_Task_Sales_Line_API.Get_State(a.sales_line_seq) =
+               'Invoiceable'
+           AND &AO..Jt_Task_API.Get_Work_Type_Id(&AO..Jt_Task_Sales_Line_API.Get_Task_Seq(a.sales_line_seq)) IS NOT NULL
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA - Service Delivery  Management Lobby';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

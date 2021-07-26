@@ -1,0 +1,81 @@
+-----------------------------------------------------------------------------
+--
+--  Component: WO
+--
+--  Purpose: Creates the IAL Object WOS_AWAITING_WAREHOUSE
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210630  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = WOS_AWAITING_WAREHOUSE
+DEFINE MODULE        = WO
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT distinct task_seq, wo_no, reg_date
+          FROM (SELECT a.task_seq,
+                       a.wo_no,
+                       a.maint_material_order_no,
+                       a.line_item_no,
+                       a.is_closed,
+                       &AO..Active_Separate_API.Get_Reg_Date(a.wo_no) as reg_date,
+                       &AO..Maint_Material_Req_Line_API.Get_Plan_Qty(a.maint_material_order_no,
+                                                                    a.line_item_no) as plan_qty,
+                       &AO..Maint_Material_Req_Line_API.Get_Qty_Assigned(a.maint_material_order_no,
+                                                                        a.line_item_no) as qty_assigned
+                  FROM &AO..maint_material_req_line_uiv a
+                
+                 WHERE &AO..Maint_Material_Requisition_API.Transport_Task_Exist(a.wo_no,
+                                                                               a.maint_material_order_no,
+                                                                               a.task_seq,
+                                                                               a.line_item_no) =
+                       'FALSE'
+                      
+                   AND (plan_qty > qty_assigned OR
+                        (plan_qty = qty_assigned AND
+                        a.task_seq IN (SELECT c.task_seq
+                                          FROM &AO..jt_execution_instance_uiv c
+                                         WHERE c.task_seq = a.task_seq
+                                           AND &AO..Jt_Execution_Instance_API.Get_State(a.task_seq,
+                                                                                       c.execution_instance_seq) =
+                                               'Assigned')))
+                   AND a.is_closed = 0
+                   AND &AO..Sc_Service_Contract_API.Get_Contract_Type(&AO..Jt_Task_API.Get_Contract_Id(task_seq)) = 'MS')
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'EA CRIM C449 - SERVICE DELIVERY MANAGEMENT LOBBY';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/
