@@ -1,0 +1,59 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object SER_MAN_COMPLETED_TASKS
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210406  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SER_MAN_COMPLETED_TASKS
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT wo_no,
+       task_seq,
+       t.organization_id,
+       &AO..ACTIVE_SEPARATE_API.Get_Customer_No(wo_no) customer_no,
+       t.work_type_id,
+       actual_finish,
+       state
+  FROM &AO..JT_TASK_UIV t
+ WHERE objstate IN ('WORKDONE','REPORTED','FINISHED') 
+   AND wo_no IN ( SELECT wo_no FROM &AO..ACTIVE_SEPARATE_UIV)
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+END;
+/
+COMMIT
+/

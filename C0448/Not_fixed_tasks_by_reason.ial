@@ -1,0 +1,73 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object NOT_FIXED_TASKS_BY_REASON
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210316  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = NOT_FIXED_TASKS_BY_REASON
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+select task_Seq,customer_no,actual_finish,organization_id,work_type_id,first_time_fix, 1 as total from (
+select wo_no, max(task_Seq) task_Seq,customer_no, max(actual_finish) actual_finish, max(organization_id)organization_id, max(work_type_id) work_type_id, first_time_fix
+from
+(
+SELECT wo.wo_no,( 
+CASE WHEN wo.wo_no IN 
+(SELECT wo_no FROM (
+SELECT wo_no FROM &AO..ACTIVE_SEPARATE_UIV wo WHERE (SELECT count(*) FROM &AO..JT_TASK_UIV wt,&AO..JT_EXECUTION_INSTANCE_UIV wa
+WHERE wt.wo_no = wa.wo_no
+  AND wt.task_seq = wa.task_seq
+  AND wa.state = 'Completed'
+  AND wo.wo_no = wt.wo_no) = 1
+  UNION ALL
+SELECT wo_no FROM &AO..ACTIVE_SEPARATE_UIV wo WHERE  (
+SELECT count(*) FROM &AO..JT_TASK_UIV wt WHERE wt.wo_no = wo.wo_no AND (
+  SELECT count(*) FROM &AO..JT_EXECUTION_INSTANCE_UIV ta WHERE ta.wo_no = wt.wo_no AND state = 'Completed' AND sent_date < sysdate) = 1) > 1
+  ))
+  THEN 1 ELSE 0 END) first_Time_fix, wo.customer_no, wt.actual_finish, wt.organization_id, wt.work_type_id,wt.task_seq
+FROM &AO..ACTIVE_SEPARATE_UIV wo, &AO..JT_TASK_UIV wt where 
+wo.wo_no = wt.wo_No)
+group by wo_no, first_time_fix, customer_no)
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'C0448';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/

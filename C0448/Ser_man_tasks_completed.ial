@@ -1,0 +1,65 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object SER_MAN_TASKS_COMPLETED
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210324  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SER_MAN_TASKS_COMPLETED
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+select a0.actual_Date, to_Date(a0.actual_DAte,'DD/MM/YYYY') actual_Datetime,wo_no, task_seq, a1.organization_id,
+&AO..ACTIVE_SEPARATE_API.Get_Customer_No(wo_no) customer_no, a1.work_type_id,a1.actual_finish from 
+(select actual_date 
+from (
+select to_char((select min (actual_finish) from &AO..JT_TASK_UIV) + rownum -1,'DD/MM/YYYY') actual_date
+from user_objects
+ where rownum <= sysdate - (select min (actual_finish) from &AO..JT_TASK_UIV)+1
+ )) a0
+ left outer join  
+ 
+ (
+select wo_no, task_seq, wt.organization_id,
+&AO..ACTIVE_SEPARATE_API.Get_Customer_No(wo_no) customer_no, wt.work_type_id, actual_finish, to_char(actual_finish,'DD/MM/YYYY') actual_finish_date  from &AO..JT_TASK_UIV wt where task_seq in (
+select task_seq from &AO..JT_EXECUTION_INSTANCE_UIV ta where ta.task_seq = wt.task_seq and state = 'Completed')) a1
+on a0.actual_date = a1.actual_finish_date
+
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+END;
+/
+COMMIT
+/

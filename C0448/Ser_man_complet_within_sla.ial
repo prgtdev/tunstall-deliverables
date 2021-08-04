@@ -1,0 +1,73 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object SER_MAN_COMPLET_WITHIN_SLA
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210325  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = SER_MAN_COMPLET_WITHIN_SLA
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+select wo_no,
+       task_seq,
+       work_type_id,
+       organization_id,
+       customer_no,
+       actual_finish,
+       work_finish,
+       tunstall_sla,
+       (case when work_finish < tunstall_sla then 1 else 0 end) completed_within_sla 
+from (
+select wo_no,
+       task_seq,
+       work_type_id,
+       wt.organization_id,
+       &AO..ACTIVE_SEPARATE_API.Get_Customer_No(wo_no) customer_no,
+       actual_finish,
+       wt.CF$_TUNSTALL_SLA tunstall_sla,
+       (select max(work_finish) from &AO..JT_EXECUTION_INSTANCE_UIV where state = 'Completed' and task_seq = wt.task_seq) work_finish
+from &AO..JT_TASK_UIV_cfv wt
+where task_seq in ( 
+SELECT task_seq 
+FROM &AO..JT_EXECUTION_INSTANCE_UIV wa
+WHERE state = 'Completed' and wa.task_seq = wt.task_seq)
+)
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+END;
+/
+COMMIT
+/
