@@ -1,0 +1,80 @@
+-----------------------------------------------------------------------------
+--
+--  Component: 
+--
+--  Purpose: Creates the IAL Object RESOURCE_KPI_PIE_CHART
+--
+--
+--
+--  Date    Sign    History
+--  ------  ------  -----------------------------------------------------------
+--  210804  IFSAPP  Created.
+-----------------------------------------------------------------------------
+
+DEFINE OBJECT        = RESOURCE_KPI_PIE_CHART
+DEFINE MODULE        = 
+DEFINE AO            = &AO
+DEFINE IAL_OWNER     = &IAL_OWNER
+
+PROMPT Creating IAL Object &OBJECT
+
+-----------------------------------------------------------------------------
+---------------------------- DISABLE OBJECT ---------------------------------
+-----------------------------------------------------------------------------
+
+BEGIN
+   &AO..IAL_Object_API.Disable('&OBJECT');
+END;
+/
+
+-----------------------------------------------------------------------------
+-------------------------------- IAL VIEW -----------------------------------
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW &IAL_OWNER..&OBJECT._IAL AS
+SELECT *
+FROM (
+   SELECT v1.task_seq, 'Work' work_type, v1.employee_name, v1.start_time, v1.stop_time, v1.work_hours
+   FROM &AO..JT_TASK_CLOCKING_UIV v1
+   WHERE v1.clocking_category = 'Work'
+   UNION
+   SELECT v2.task_seq, 'Travel' work_type, v2.employee_name, v2.start_time, v2.stop_time, v2.work_hours
+   FROM &AO..JT_TASK_CLOCKING_UIV v2
+   WHERE v2.clocking_category = 'Travel'
+   UNION
+   SELECT 
+      v3.task_seq,
+      'Shift Admin' work_type,
+      v3.employee_name,
+      v3.start_time,
+      v3.stop_time,
+      &AO..C_EA_CUSTOMIZATION_UTIL_API.Calculate_Shift_Admin_Time(v3.employee_name) work_hours
+   FROM &AO..JT_TASK_CLOCKING_UIV v3
+   UNION
+   SELECT 
+      v4.task_seq,
+      'Idle Time' work_type,
+      v4.employee_name,
+      v4.start_time,
+      v4.stop_time,
+      &AO..C_EA_CUSTOMIZATION_UTIL_API.Calculate_Idle_Time(v4.employee_name, TO_CHAR(v4.start_time, 'DD/MM/YYYY'), TO_CHAR(v4.stop_time, 'DD/MM/YYYY')) work_hours
+   FROM &AO..JT_TASK_CLOCKING_UIV v4
+)
+WITH   read only;
+
+GRANT SELECT ON &IAL_OWNER..&OBJECT._IAL TO &AO WITH GRANT OPTION
+/
+
+-----------------------------------------------------------------------------
+--------------------------- OBJECT REGISTRATION -----------------------------
+-----------------------------------------------------------------------------
+
+DECLARE
+  ial_object_desc_  VARCHAR2(100) := 'C0448 - Data source for Resource KPI lobby element's pie chart.';
+BEGIN
+   &AO..IAL_Object_API.Enable('&OBJECT');
+   &AO..IAL_Object_API.Add_Description('&OBJECT', ial_object_desc_);
+END;
+/
+COMMIT
+/
